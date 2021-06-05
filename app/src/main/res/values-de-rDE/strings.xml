@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pipe Network</string>
+    <string name="menu_home">Home</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="connect">Verbinden</string>
+    <string name="disconnect">Verbindung unterbrechen</string>
+    <string name="first_name">Vorname</string>
+    <string name="last_name">Nachname</string>
+    <string name="setup_and_start">Einrichten und Starten</string>
+    <string name="add_profile_picture">Profilfoto hinzufügen</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="settings_menu_delete_all_data">Alle Daten löschen</string>
+    <string name="menu_friends">Freunde</string>
+    <string name="add_friend">Freund hinzufügen</string>
+    <string name="public_key">Pipe Key</string>
+    <string name="friend_image">Freund Foto</string>
+    <string name="pending">Ausstehend</string>
+    <string name="description">Beschreibung</string>
+    <string name="menu_profile">Profil</string>
+    <string name="save">Speichern</string>
+    <string name="your_pipe_key">Dein Pipe Key</string>
+    <string name="copy_pipe_key">Pipe Key kopieren</string>
+    <string name="paste_pipe_key_here">Pipe Key hier hinein kopieren</string>
+    <string name="delete_warning">Diese Aktion wird alle deine Pipe Network Freunde und Posts löschen, willst du das wirklich?</string>
+    <string name="yes">Ja</string>
+    <string name="pipe_key_copied">Dein Pipe Key wurde kopiert!</string>
+    <string name="saved">Gespeichert</string>
+    <string name="undo">rückgängig</string>
+    <string name="what_s_on_your_mind">Worüber denkst du gerade?</string>
+    <string name="post">Post</string>
+    <string name="add_post">Post hinzufügen</string>
+</resources>

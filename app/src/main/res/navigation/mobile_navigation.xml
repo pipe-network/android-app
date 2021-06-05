@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.pipe_network.app.android.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.pipe_network.app.android.ui.settings.Settings"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" />
+    <fragment
+        android:id="@+id/navigation_friends"
+        android:name="com.pipe_network.app.android.ui.friends.FriendsFragment"
+        android:label="friends_fragment"
+        tools:layout="@layout/friends_fragment" />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.pipe_network.app.android.ui.profile.ProfileFragment"
+        android:label="profile_fragment"
+        tools:layout="@layout/profile_fragment" />
+
+</navigation>

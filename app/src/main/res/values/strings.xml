@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Pipe Network</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+
+    <string name="default_notification_channel_id" translatable="false">default_notification_channel_id</string>
+    <string name="msg_token_fmt" translatable="false">FCM registration Token: %s</string>
+
+    <string name="connect" translatable="true">Connect</string>
+    <string name="disconnect" translatable="true">Disconnect</string>
+
+    <string name="first_name" translatable="true">First Name</string>
+    <string name="last_name" translatable="true">Last Name</string>
+    <string name="setup_and_start" translatable="true">Setup and Start</string>
+    <string name="add_profile_picture">Add profile picture</string>
+    <string name="menu_settings">Settings</string>
+    <string name="settings_menu_delete_all_data">Delete all data</string>
+    <string name="menu_friends">Friends</string>
+    <string name="add_friend">Add friend</string>
+    <string name="public_key">Pipe Key</string>
+    <string name="friend_image">Friend image</string>
+    <string name="pending">Pending</string>
+    <string name="description">Description</string>
+    <string name="menu_profile">Profile</string>
+    <string name="save">Save</string>
+    <string name="your_pipe_key">Your Pipe Key</string>
+    <string name="copy_pipe_key">Copy Pipe Key</string>
+    <string name="paste_pipe_key_here">Paste Pipe Key here</string>
+    <string name="delete_warning">This action will wipe all pipe network posts from your smartphone and all your pipe network friends will be lost, are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="pipe_key_copied">Your Pipe Key was copied!</string>
+    <string name="saved">Saved</string>
+    <string name="undo">Undo</string>
+    <string name="what_s_on_your_mind">What\'s on your mind?</string>
+    <string name="post">Post</string>
+    <string name="add_post">Add post</string>
+</resources>
