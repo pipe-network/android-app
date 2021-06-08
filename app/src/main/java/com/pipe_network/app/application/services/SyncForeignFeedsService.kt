@@ -6,7 +6,7 @@ import java.util.*
 import javax.inject.Inject
 
 interface SyncForeignFeedsService {
-    suspend fun getToRetrieveFeedHeads(feedHead: List<FeedHead>): List<FeedHead>
+    suspend fun getToRetrieveFeedHeads(feedHeads: List<FeedHead>): List<FeedHead>
 }
 
 class SyncForeignFeedsServiceImpl @Inject constructor(
