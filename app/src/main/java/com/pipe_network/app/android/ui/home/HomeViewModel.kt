@@ -12,8 +12,8 @@ import com.pipe_network.app.application.handlers.IncomingPipeMessageHandler
 import com.pipe_network.app.application.observers.PipeConnectionObserver
 import com.pipe_network.app.application.repositories.FriendRepository
 import com.pipe_network.app.application.repositories.ProfileRepository
-import com.pipe_network.app.domain.entities.pipe_messages.RequestProfile
-import com.pipe_network.app.domain.entities.pipe_messages.RespondProfile
+import com.pipe_network.app.domain.entities.Feed
+import com.pipe_network.app.domain.entities.pipe_messages.RequestTypeMessage
 import com.pipe_network.app.domain.models.PipeConnection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +34,7 @@ class HomeViewModel @Inject constructor(
     application: Application,
 ) : AndroidViewModel(application) {
     lateinit var pipeConnection: PipeConnection
+    val feeds: MutableLiveData<MutableList<Feed>> = MutableLiveData(mutableListOf())
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun fetchFeeds() {
@@ -71,22 +72,31 @@ class HomeViewModel @Inject constructor(
 
                         override fun onDataChannelContextMessage(byteArray: ByteArray) {
                             incomingPipeMessageHandler.handle(
+                                friend,
                                 false,
                                 pipeConnection,
                                 profile,
                                 byteArray,
-                            )
+                            ) {
+                                Log.d(TAG, "Received a new Feed: $it")
+                                Log.d(TAG, "FEEDS VALUE: ${feeds.value?.size}")
+                                val feedsCopy = feeds.value ?: arrayListOf()
+                                feedsCopy.add(it)
+                                feeds.postValue(feedsCopy)
+                            }
                         }
 
                         override fun onDataChannelContextStateChange(state: DataChannel.State) {
                             Log.d(TAG, "DataChannelContext state changed: $state")
                             if (state == DataChannel.State.OPEN) {
-                                val objectMapper =
-                                    ObjectMapper(MessagePackFactory()).registerKotlinModule()
-                                Log.d(TAG, "Outgoing: RequestProfile")
+                                val objectMapper = ObjectMapper(
+                                    MessagePackFactory()
+                                ).registerKotlinModule()
+
+                                Log.d(TAG, "Outgoing from HomeViewModel: RequestProfile")
                                 pipeConnection.sendMessage(
                                     objectMapper.writeValueAsBytes(
-                                        RequestProfile(),
+                                        RequestTypeMessage.createAsRequestProfile()
                                     ),
                                 )
                             }

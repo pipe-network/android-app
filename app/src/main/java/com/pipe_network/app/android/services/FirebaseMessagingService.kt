@@ -21,6 +21,7 @@ import com.pipe_network.app.application.repositories.FriendRepository
 import com.pipe_network.app.application.repositories.ProfileRepository
 import com.pipe_network.app.application.services.AddDeviceTokenService
 import com.pipe_network.app.domain.models.PipeConnection
+import com.pipe_network.app.infrastructure.models.Friend
 import com.pipe_network.app.infrastructure.models.Profile
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -48,7 +49,6 @@ class FirebaseMessagingService : FirebaseMessagingService() {
     @Inject
     lateinit var addDeviceTokenService: AddDeviceTokenService
 
-
     lateinit var pipeConnection: PipeConnection
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -74,6 +74,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
                 )
                 val initiatorPipeConnectionObserver = InitiatorPipeConnectionObserver(
                     profile,
+                    friend,
                     incomingPipeMessageHandler,
                 )
                 pipeConnection = pipeConnectionFactory.createInitiatorPipeConnection(
@@ -139,6 +140,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
     private class InitiatorPipeConnectionObserver(
         val profile: Profile,
+        val friend: Friend,
         val incomingPipeMessageHandler: IncomingPipeMessageHandler,
     ) : PipeConnectionObserver {
         lateinit var pipeConnection: PipeConnection
@@ -165,7 +167,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         }
 
         override fun onDataChannelContextMessage(byteArray: ByteArray) {
-            incomingPipeMessageHandler.handle(true, pipeConnection, profile, byteArray)
+            incomingPipeMessageHandler.handle(friend, true, pipeConnection, profile, byteArray) {}
         }
 
         override fun onDataChannelContextStateChange(state: DataChannel.State) {

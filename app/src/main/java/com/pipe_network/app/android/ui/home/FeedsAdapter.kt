@@ -26,7 +26,7 @@ class FeedsAdapter :
         }
     }
 
-    private var feeds: List<Feed> = listOf()
+    private var feeds: MutableList<Feed> = mutableListOf()
 
     class TextFeedHolder(view: View) : BaseViewHolder<Feed>(view), View.OnClickListener {
         private val profilePicture: ImageView = view.findViewById(R.id.profile_picture)
@@ -95,7 +95,7 @@ class FeedsAdapter :
             }
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return feeds[oldItemPosition].hashCode() == newFeeds[newItemPosition].hashCode()
+                return feeds[oldItemPosition].uuid == newFeeds[newItemPosition].uuid
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -104,7 +104,8 @@ class FeedsAdapter :
 
         })
 
-        feeds = newFeeds
         result.dispatchUpdatesTo(this);
+        feeds.clear()
+        feeds.addAll(newFeeds)
     }
 }

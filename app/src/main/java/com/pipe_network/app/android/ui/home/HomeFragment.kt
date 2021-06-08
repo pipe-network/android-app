@@ -66,16 +66,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
-            val friend = friendRepository.getById(1)
-            if (friend != null) {
-                feedsAdapter.setFeeds(
-                    listOf(
-                        Feed("", "Hello World!", friend, BigInteger.valueOf(0)),
-                        Feed("", "Another one", friend, BigInteger.valueOf(0)),
-                    )
-                )
-            }
+        homeViewModel.feeds.observe(viewLifecycleOwner) {
+            feedsAdapter.setFeeds(it)
         }
     }
 

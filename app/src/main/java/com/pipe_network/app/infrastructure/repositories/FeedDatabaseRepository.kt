@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.pipe_network.app.application.repositories.FeedRepository
 import com.pipe_network.app.infrastructure.databases.ApplicationDatabase
 import com.pipe_network.app.infrastructure.models.Feed
+import java.util.*
 import javax.inject.Inject
 
 class FeedDatabaseRepository @Inject constructor(
@@ -15,6 +16,10 @@ class FeedDatabaseRepository @Inject constructor(
 
     override suspend fun all(): List<Feed> {
         return database.feedDao().all()
+    }
+
+    override suspend fun get(id: UUID): Feed? {
+        return database.feedDao().get(id)
     }
 
     override suspend fun create(feed: Feed): Long {

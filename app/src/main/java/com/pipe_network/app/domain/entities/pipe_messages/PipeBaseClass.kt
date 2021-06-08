@@ -11,8 +11,11 @@ import com.pipe_network.app.domain.entities.Profile
     property = "@class"
 )
 @JsonSubTypes(
+    Type(value = RequestTypeMessage::class, name = "RequestTypeMessage"),
     Type(value = RespondProfile::class, name = "RespondProfile"),
-    Type(value = RequestProfile::class, name = "RequestProfile"),
+    Type(value = RespondFeedHeads::class, name = "RespondFeedHeads"),
+    Type(value = RequestFeed::class, name = "RequestFeed"),
+    Type(value = RespondFeed::class, name = "RespondFeed"),
     Type(value = Profile::class, name = "Profile"),
 )
 abstract class PipeBaseClass(val type: String)
