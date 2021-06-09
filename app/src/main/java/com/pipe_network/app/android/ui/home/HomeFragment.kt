@@ -61,14 +61,20 @@ class HomeFragment : Fragment() {
             startActivity(Intent(requireContext(), CreateFeedActivity::class.java))
         }
 
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         homeViewModel.feeds.observe(viewLifecycleOwner) {
-            feedsAdapter.setFeeds(it)
+            val feeds = it.map {
+                Feed(
+                    uuid = it.foreignFeed.id.toString(),
+                    text = it.foreignFeed.text,
+                    friend = it.friend,
+                    timestamp = it.foreignFeed.created.time,
+                    picture = it.foreignFeed.getPictureFile()?.readBytes(),
+                )
+            }
+            feedsAdapter.setFeeds(feeds)
         }
+
+        return root
     }
 
     companion object {

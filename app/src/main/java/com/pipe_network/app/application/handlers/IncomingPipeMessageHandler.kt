@@ -21,6 +21,7 @@ import de.datlag.mimemagic.MimeData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.msgpack.jackson.dataformat.MessagePackFactory
 import java.io.File
 import java.util.*
@@ -33,7 +34,6 @@ interface IncomingPipeMessageHandler {
         pipeConnection: PipeConnection,
         profile: Profile,
         byteArray: ByteArray,
-        onFeed: (Feed) -> Unit,
     )
 }
 
@@ -63,7 +63,6 @@ class IncomingPipeMessageHandlerImpl @Inject constructor(
         pipeConnection: PipeConnection,
         profile: Profile,
         byteArray: ByteArray,
-        onFeed: (Feed) -> Unit,
     ) {
         try {
             val requestTypeMessage =
@@ -114,7 +113,7 @@ class IncomingPipeMessageHandlerImpl @Inject constructor(
 
         try {
             val respondFeed = objectMapper.readValue(byteArray, RespondFeed::class.java)
-            onRespondFeed(friend, pipeConnection, respondFeed, onFeed)
+            onRespondFeed(friend, pipeConnection, respondFeed)
             return
         } catch (exception: Exception) {
             handleException(exception)
@@ -189,7 +188,7 @@ class IncomingPipeMessageHandlerImpl @Inject constructor(
                 val outgoingFeed = OutgoingFeed(
                     it.id.toString(),
                     it.text,
-                    it.created.time.toBigInteger(),
+                    it.created.time,
                 )
                 val respondFeedBytes = objectMapper.writeValueAsBytes(RespondFeed(outgoingFeed))
                 Log.d(TAG, "Outgoing: RespondFeed")
@@ -223,7 +222,6 @@ class IncomingPipeMessageHandlerImpl @Inject constructor(
         friend: Friend,
         pipeConnection: PipeConnection,
         respondFeed: RespondFeed,
-        onFeed: (Feed) -> Unit,
     ) {
         Log.d(TAG, "Incoming: RespondFeed")
         feedsReceived += 1
@@ -239,7 +237,10 @@ class IncomingPipeMessageHandlerImpl @Inject constructor(
             respondFeed.feed.timestamp,
             respondFeed.feed.picture,
         )
-        onFeed(feed)
+
+        runBlocking {
+            syncForeignFeedsService.storeForeignFeed(feed)
+        }
     }
 
 

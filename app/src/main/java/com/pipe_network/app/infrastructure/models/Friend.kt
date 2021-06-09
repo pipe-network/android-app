@@ -1,8 +1,6 @@
 package com.pipe_network.app.infrastructure.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.io.File
 
 @Entity
@@ -37,3 +35,12 @@ data class Friend(
         return "$firstName $lastName"
     }
 }
+
+data class FriendWithForeignFeeds(
+    @Embedded val friend: Friend,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "friendId"
+    )
+    val foreignFeeds: List<ForeignFeed>
+)

@@ -8,7 +8,7 @@ data class Feed(
     val uuid: String,
     val text: String,
     val friend: Friend,
-    val timestamp: BigInteger,
+    val timestamp: Long,
     val picture: ByteArray? = null,
 ) {
     override fun equals(other: Any?): Boolean {

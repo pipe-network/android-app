@@ -167,7 +167,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         }
 
         override fun onDataChannelContextMessage(byteArray: ByteArray) {
-            incomingPipeMessageHandler.handle(friend, true, pipeConnection, profile, byteArray) {}
+            incomingPipeMessageHandler.handle(friend, true, pipeConnection, profile, byteArray)
         }
 
         override fun onDataChannelContextStateChange(state: DataChannel.State) {

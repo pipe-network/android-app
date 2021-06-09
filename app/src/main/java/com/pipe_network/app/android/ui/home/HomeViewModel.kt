@@ -10,11 +10,14 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.pipe_network.app.application.factories.PipeConnectionFactory
 import com.pipe_network.app.application.handlers.IncomingPipeMessageHandler
 import com.pipe_network.app.application.observers.PipeConnectionObserver
+import com.pipe_network.app.application.repositories.ForeignFeedRepository
 import com.pipe_network.app.application.repositories.FriendRepository
 import com.pipe_network.app.application.repositories.ProfileRepository
 import com.pipe_network.app.domain.entities.Feed
 import com.pipe_network.app.domain.entities.pipe_messages.RequestTypeMessage
 import com.pipe_network.app.domain.models.PipeConnection
+import com.pipe_network.app.infrastructure.models.ForeignFeed
+import com.pipe_network.app.infrastructure.models.ForeignFeedWithUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,10 +34,11 @@ class HomeViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val pipeConnectionFactory: PipeConnectionFactory,
     private val incomingPipeMessageHandler: IncomingPipeMessageHandler,
+    foreignFeedRepository: ForeignFeedRepository,
     application: Application,
 ) : AndroidViewModel(application) {
     lateinit var pipeConnection: PipeConnection
-    val feeds: MutableLiveData<MutableList<Feed>> = MutableLiveData(mutableListOf())
+    val feeds: LiveData<List<ForeignFeedWithUser>> = foreignFeedRepository.allLiveWithUsers()
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun fetchFeeds() {
@@ -77,13 +81,7 @@ class HomeViewModel @Inject constructor(
                                 pipeConnection,
                                 profile,
                                 byteArray,
-                            ) {
-                                Log.d(TAG, "Received a new Feed: $it")
-                                Log.d(TAG, "FEEDS VALUE: ${feeds.value?.size}")
-                                val feedsCopy = feeds.value ?: arrayListOf()
-                                feedsCopy.add(it)
-                                feeds.postValue(feedsCopy)
-                            }
+                            )
                         }
 
                         override fun onDataChannelContextStateChange(state: DataChannel.State) {

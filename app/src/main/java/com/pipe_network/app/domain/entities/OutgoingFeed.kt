@@ -1,11 +1,9 @@
 package com.pipe_network.app.domain.entities
 
-import java.math.BigInteger
-
 data class OutgoingFeed(
     val uuid: String,
     val text: String,
-    val timestamp: BigInteger,
+    val timestamp: Long,
     val picture: ByteArray? = null,
 ) {
     override fun equals(other: Any?): Boolean {

@@ -4,8 +4,6 @@ import android.content.Context
 import android.net.Uri
 import de.datlag.mimemagic.MimeData
 import id.zelory.compressor.Compressor
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -36,9 +34,7 @@ class ProfilePictureServiceImpl @Inject constructor() : ProfilePictureService {
         context: Context,
         profilePictureUri: Uri,
     ): File {
-        val profilePictureInputStream = context.contentResolver.openInputStream(
-            profilePictureUri,
-        )
+        val profilePictureInputStream = context.contentResolver.openInputStream(profilePictureUri)
         val profilePictureByteArray = profilePictureInputStream!!.readBytes()
         val mimeData = MimeData.fromByteArray(profilePictureByteArray)
         val profilePictureFile = File(
