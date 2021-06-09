@@ -16,6 +16,7 @@ import androidx.core.widget.doOnTextChanged
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pipe_network.app.android.MainActivity
 import com.pipe_network.app.R
+import com.pipe_network.app.android.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -65,9 +66,14 @@ class SetupActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.setupActionButton).setOnClickListener {
             setupViewModel.doSetup(applicationContext)
-            val intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
+        }
+
+        setupViewModel.saveStatus.observe(this) {
+            if (it == Status.SUCCESS) {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+            }
         }
     }
 
