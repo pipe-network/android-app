@@ -56,7 +56,7 @@ class FriendsListAdapter(val friendRepository: FriendRepository) :
         private val friendDescription: TextView = view.findViewById(
             R.id.inititatedFriendDescription,
         )
-        private val deleteInitiatedFriendButton: TextView = view.findViewById(R.id.deleteUninitiatedFriend)
+        private val deleteInitiatedFriendButton: TextView = view.findViewById(R.id.deleteInitiatedFriend)
 
         init {
             view.setOnClickListener(this)
