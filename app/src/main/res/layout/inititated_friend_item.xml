@@ -45,4 +45,17 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/initiatedFriendProfilePicture"
         app:layout_constraintTop_toBottomOf="@+id/initiatedFriendName" />
+
+    <TextView
+        android:id="@+id/deleteInitiatedFriend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/initiatedFriendProfilePicture"
+        app:layout_constraintTop_toBottomOf="@+id/inititatedFriendDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

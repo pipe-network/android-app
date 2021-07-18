@@ -11,10 +11,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pipe_network.app.R
 import com.pipe_network.app.android.utils.BaseViewHolder
+import com.pipe_network.app.application.repositories.FriendRepository
 import com.pipe_network.app.infrastructure.models.Friend
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
-class FriendsListAdapter :
+class FriendsListAdapter(val friendRepository: FriendRepository) :
     RecyclerView.Adapter<BaseViewHolder<Friend>>() {
 
     enum class FriendsViewTypes {
@@ -29,15 +33,22 @@ class FriendsListAdapter :
 
     private var friends: List<Friend> = listOf()
 
-    class UninitiatedFriendHolder(view: View) : BaseViewHolder<Friend>(view) {
+    class UninitiatedFriendHolder(view: View, val friendRepository: FriendRepository) : BaseViewHolder<Friend>(view) {
         private val publicKey: TextView = view.findViewById(R.id.uninitiatedFriendPublicKey)
+        private val deleteUninitiatedFriendButton: TextView = view.findViewById(R.id.deleteUninitiatedFriend)
 
         override fun bind(item: Friend) {
             publicKey.text = item.publicKey
+
+            deleteUninitiatedFriendButton.setOnClickListener {
+                CoroutineScope(Dispatchers.IO).launch {
+                    friendRepository.delete(item)
+                }
+            }
         }
     }
 
-    class InitiatedFriendHolder(view: View) : BaseViewHolder<Friend>(view), View.OnClickListener {
+    class InitiatedFriendHolder(view: View, val friendRepository: FriendRepository) : BaseViewHolder<Friend>(view), View.OnClickListener {
         private val friendName: TextView = view.findViewById(R.id.initiatedFriendName)
         private val friendProfilePicture: ImageView = view.findViewById(
             R.id.initiatedFriendProfilePicture,
@@ -45,6 +56,7 @@ class FriendsListAdapter :
         private val friendDescription: TextView = view.findViewById(
             R.id.inititatedFriendDescription,
         )
+        private val deleteInitiatedFriendButton: TextView = view.findViewById(R.id.deleteUninitiatedFriend)
 
         init {
             view.setOnClickListener(this)
@@ -58,6 +70,12 @@ class FriendsListAdapter :
             friendName.text = "${item.firstName} ${item.lastName}"
             friendProfilePicture.setImageURI(item.getProfilePictureFile().toUri())
             friendDescription.text = item.description
+
+            deleteInitiatedFriendButton.setOnClickListener {
+                CoroutineScope(Dispatchers.IO).launch {
+                    friendRepository.delete(item)
+                }
+            }
         }
     }
 
@@ -71,7 +89,7 @@ class FriendsListAdapter :
                     parent,
                     false,
                 )
-                UninitiatedFriendHolder(view)
+                UninitiatedFriendHolder(view, friendRepository)
             }
             FriendsViewTypes.INITIATED_FRIEND -> {
                 val view = LayoutInflater.from(context).inflate(
@@ -79,7 +97,7 @@ class FriendsListAdapter :
                     parent,
                     false,
                 )
-                InitiatedFriendHolder(view)
+                InitiatedFriendHolder(view, friendRepository)
             }
             else ->
                 throw IllegalArgumentException("FriendViewType was not found")

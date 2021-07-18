@@ -3,6 +3,7 @@ package com.pipe_network.app.infrastructure.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.File
 import java.util.*
 
 @Entity
@@ -21,5 +22,12 @@ data class Feed(
 ) {
     fun hasPicture(): Boolean {
         return this.picturePath != null
+    }
+
+    fun pictureFile(): File? {
+        picturePath?.let {
+            return File(it)
+        }
+        return null
     }
 }

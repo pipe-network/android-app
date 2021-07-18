@@ -16,20 +16,27 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pipe_network.app.R
 import com.pipe_network.app.android.ui.setup.SetupActivity
 import com.pipe_network.app.android.utils.Status
+import com.pipe_network.app.application.repositories.FeedRepository
 import dagger.hilt.android.AndroidEntryPoint
 import de.hdodenhof.circleimageview.CircleImageView
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private val profileViewModel by viewModels<ProfileViewModel>()
-
     private lateinit var profilePicture: CircleImageView
+    private lateinit var userFeedsAdapter: UserFeedsAdapter
+
+    @Inject
+    lateinit var feedRepository: FeedRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,6 +132,16 @@ class ProfileFragment : Fragment() {
 
             profileViewModel.profilePictureUri.value = it.getProfilePictureUri()
         }
+
+        userFeedsAdapter = UserFeedsAdapter(feedRepository)
+        val feedsRecyclerView = root.findViewById<RecyclerView>(R.id.userFeedsRecyclerView)
+        feedsRecyclerView.adapter = userFeedsAdapter
+        feedsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        profileViewModel.userFeeds.observe(viewLifecycleOwner) { list ->
+            userFeedsAdapter.setFeeds(list)
+        }
+
         return root
     }
 }

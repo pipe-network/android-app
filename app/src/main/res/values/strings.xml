@@ -35,4 +35,6 @@
     <string name="what_s_on_your_mind">What\'s on your mind?</string>
     <string name="post">Post</string>
     <string name="add_post">Add post</string>
+    <string name="user_feeds">Your Feeds</string>
+    <string name="delete">Delete</string>
 </resources>

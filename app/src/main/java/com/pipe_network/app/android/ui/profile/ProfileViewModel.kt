@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.*
 import com.pipe_network.app.android.utils.Status
+import com.pipe_network.app.application.repositories.FeedRepository
 import com.pipe_network.app.application.repositories.ProfileRepository
 import com.pipe_network.app.application.services.ProfilePictureService
 import com.pipe_network.app.infrastructure.databases.ApplicationDatabase
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val profilePictureService: ProfilePictureService,
+    private val feedRepository: FeedRepository,
     application: Application
 ) : AndroidViewModel(application) {
     val firstName by lazy {
@@ -34,6 +36,10 @@ class ProfileViewModel @Inject constructor(
     }
     val profile = profileRepository.getLive()
     val saveStatus = MutableLiveData(Status.INIT)
+
+    val userFeeds by lazy {
+        feedRepository.allLive()
+    }
 
     fun save() {
         viewModelScope.launch {

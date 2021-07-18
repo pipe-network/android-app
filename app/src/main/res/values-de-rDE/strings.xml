@@ -30,4 +30,6 @@
     <string name="what_s_on_your_mind">Worüber denkst du gerade?</string>
     <string name="post">Post</string>
     <string name="add_post">Post hinzufügen</string>
+    <string name="user_feeds">Deine Feeds</string>
+    <string name="delete">Delete</string>
 </resources>
