@@ -74,6 +74,10 @@ class MainActivity : AppCompatActivity() {
         ) as NavHostFragment
         val navController = navHostFragment.navController
 
+        if (intent.hasExtra("navigation")) {
+            navController.navigate(intent.getIntExtra("navigation", R.id.navigation_home))
+        }
+
         navView.setupWithNavController(navController)
     }
 

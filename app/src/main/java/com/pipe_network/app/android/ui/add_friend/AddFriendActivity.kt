@@ -8,6 +8,8 @@ import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.pipe_network.app.R
 import com.pipe_network.app.android.MainActivity
 import com.pipe_network.app.domain.entities.AddFriendStatus
@@ -36,6 +38,7 @@ class AddFriendActivity : AppCompatActivity() {
             Log.d(TAG, "AddFriendStatus changed: $it")
             if (it.equals(AddFriendStatus.SUCCESS)) {
                 val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("navigation", R.id.navigation_friends)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
             }
