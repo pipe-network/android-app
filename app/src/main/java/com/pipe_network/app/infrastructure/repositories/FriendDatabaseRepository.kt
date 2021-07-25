@@ -1,6 +1,7 @@
 package com.pipe_network.app.infrastructure.repositories
 
 import androidx.lifecycle.LiveData
+import com.pipe_network.app.application.repositories.ForeignFeedRepository
 import com.pipe_network.app.application.repositories.FriendRepository
 import com.pipe_network.app.infrastructure.databases.ApplicationDatabase
 import com.pipe_network.app.infrastructure.models.Friend
@@ -8,6 +9,7 @@ import javax.inject.Inject
 
 class FriendDatabaseRepository @Inject constructor(
     private val database: ApplicationDatabase,
+    private val foreignFeedRepository: ForeignFeedRepository,
 ) : FriendRepository {
     override suspend fun add(friend: Friend): Long {
         return database.friendDao().create(friend)
@@ -33,7 +35,11 @@ class FriendDatabaseRepository @Inject constructor(
         return database.friendDao().update(friend)
     }
 
-    override suspend fun delete(vararg friend: Friend) {
-        return database.friendDao().delete(*friend)
+    override suspend fun delete(vararg friends: Friend) {
+        for (friend in friends) {
+            val foreignFeeds = foreignFeedRepository.allByFriend(friend)
+            foreignFeedRepository.delete(*foreignFeeds.toTypedArray())
+        }
+        return database.friendDao().delete(*friends)
     }
 }

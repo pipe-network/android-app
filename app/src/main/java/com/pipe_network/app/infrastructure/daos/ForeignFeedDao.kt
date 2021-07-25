@@ -18,6 +18,9 @@ interface ForeignFeedDao {
     @Query("SELECT * FROM ForeignFeed")
     fun allLiveWithUsers(): LiveData<List<ForeignFeedWithUser>>
 
+    @Query("SELECT * FROM ForeignFeed WHERE friendId = :friendId ")
+    suspend fun allByFriend(friendId: Int): List<ForeignFeed>
+
     @Query("SELECT * FROM ForeignFeed WHERE id = :id ")
     suspend fun get(id: UUID): ForeignFeed?
 

@@ -5,6 +5,7 @@ import com.pipe_network.app.application.repositories.ForeignFeedRepository
 import com.pipe_network.app.infrastructure.databases.ApplicationDatabase
 import com.pipe_network.app.infrastructure.models.ForeignFeed
 import com.pipe_network.app.infrastructure.models.ForeignFeedWithUser
+import com.pipe_network.app.infrastructure.models.Friend
 import java.util.*
 import javax.inject.Inject
 
@@ -21,6 +22,10 @@ class ForeignFeedDatabaseRepository @Inject constructor(
 
     override fun allLiveWithUsers(): LiveData<List<ForeignFeedWithUser>> {
         return database.foreignFeedDao().allLiveWithUsers()
+    }
+
+    override suspend fun allByFriend(friend: Friend): List<ForeignFeed> {
+        return database.foreignFeedDao().allByFriend(friend.id)
     }
 
     override suspend fun get(id: UUID): ForeignFeed? {
