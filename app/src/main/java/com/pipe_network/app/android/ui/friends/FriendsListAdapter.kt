@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ import com.pipe_network.app.infrastructure.models.Friend
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
+
 
 class FriendsListAdapter(val friendRepository: FriendRepository) :
     RecyclerView.Adapter<BaseViewHolder<Friend>>() {
@@ -33,22 +34,43 @@ class FriendsListAdapter(val friendRepository: FriendRepository) :
 
     private var friends: List<Friend> = listOf()
 
-    class UninitiatedFriendHolder(view: View, val friendRepository: FriendRepository) : BaseViewHolder<Friend>(view) {
+    class UninitiatedFriendHolder(
+        val view: View,
+        val friendRepository: FriendRepository,
+    ) :
+        BaseViewHolder<Friend>(view) {
         private val publicKey: TextView = view.findViewById(R.id.uninitiatedFriendPublicKey)
-        private val deleteUninitiatedFriendButton: TextView = view.findViewById(R.id.deleteUninitiatedFriend)
+        private val deleteUninitiatedFriendButton: TextView =
+            view.findViewById(R.id.deleteUninitiatedFriend)
+
+        private fun onDelete(friend: Friend) {
+
+            AlertDialog.Builder(view.context, R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert)
+                .setTitle(R.string.delete_friend_confirm)
+                .setIcon(android.R.drawable.ic_delete)
+                .setPositiveButton(
+                    view.context.resources.getText(R.string.yes)
+                ) { _, _ ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        friendRepository.delete(friend)
+                    }
+                }.setNegativeButton(R.string.cancel, null).show()
+        }
 
         override fun bind(item: Friend) {
             publicKey.text = item.publicKey
 
             deleteUninitiatedFriendButton.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    friendRepository.delete(item)
-                }
+                onDelete(item)
             }
         }
     }
 
-    class InitiatedFriendHolder(view: View, val friendRepository: FriendRepository) : BaseViewHolder<Friend>(view), View.OnClickListener {
+    class InitiatedFriendHolder(
+        val view: View,
+        val friendRepository: FriendRepository,
+    ) :
+        BaseViewHolder<Friend>(view), View.OnClickListener {
         private val friendName: TextView = view.findViewById(R.id.initiatedFriendName)
         private val friendProfilePicture: ImageView = view.findViewById(
             R.id.initiatedFriendProfilePicture,
@@ -56,10 +78,24 @@ class FriendsListAdapter(val friendRepository: FriendRepository) :
         private val friendDescription: TextView = view.findViewById(
             R.id.inititatedFriendDescription,
         )
-        private val deleteInitiatedFriendButton: TextView = view.findViewById(R.id.deleteInitiatedFriend)
+        private val deleteInitiatedFriendButton: TextView =
+            view.findViewById(R.id.deleteInitiatedFriend)
 
         init {
             view.setOnClickListener(this)
+        }
+
+        private fun onDelete(friend: Friend) {
+            AlertDialog.Builder(view.context, R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert)
+                .setTitle(R.string.delete_friend_confirm)
+                .setIcon(android.R.drawable.ic_delete)
+                .setPositiveButton(
+                    view.context.resources.getText(R.string.yes)
+                ) { _, _ ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        friendRepository.delete(friend)
+                    }
+                }.setNegativeButton(R.string.cancel, null).show()
         }
 
         override fun onClick(v: View?) {
@@ -72,9 +108,7 @@ class FriendsListAdapter(val friendRepository: FriendRepository) :
             friendDescription.text = item.description
 
             deleteInitiatedFriendButton.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    friendRepository.delete(item)
-                }
+                onDelete(item)
             }
         }
     }
