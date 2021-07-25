@@ -32,4 +32,7 @@
     <string name="add_post">Post hinzufügen</string>
     <string name="user_feeds">Deine Feeds</string>
     <string name="delete">Delete</string>
+    <string name="no">Nein</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="delete_friend_confirm">Freund entfernen?</string>
 </resources>
